@@ -1,0 +1,41 @@
+# profile ? ?? DB ??? ? ??? ??. local, prod
+spring:
+  profiles:
+    active: local
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: local
+  datasource:
+    hikari: # connection pool? ???? ????
+      # H2 ?? ??
+      jdbc-url: jdbc:h2:tcp://localhost:1521/springbatch;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+      username: sa
+      password:
+      driver-class-name: org.h2.Driver
+  h2:
+    console:
+      enabled: true
+      #H2 Console? ???? ?? (H2 Console? H2 Database? UI? ????? ??)
+      path: /h2-console
+  batch:
+    jdbc:
+      initialize-schema: always
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    hikari:
+      jdbc-url: jdbc:oracle:thin:@localhost:1521:xe
+      username: spring_user
+      password:
+      driver-class-name: oracle.jdbc.OracleDriver
+
+  batch:
+    jdbc:
+      initialize-schema: always   # ???? ??? ?? ?? ???? ("BATCH_JOB_INSTANCE")
