@@ -11,7 +11,7 @@ import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-// 한번 실행하고 나면 이미 수행된 것으로 고려되나?
+
 @RequiredArgsConstructor    // 의존성 주입받기 위해
 @Configuration
 public class BatchConfiguration {

@@ -1,4 +1,4 @@
-# profile ? ?? DB ??? ? ??? ??. local, prod
+# you can select profile (local: h2, prod: Oracle)
 spring:
   profiles:
     active: local
@@ -10,8 +10,7 @@ spring:
     activate:
       on-profile: local
   datasource:
-    hikari: # connection pool? ???? ????
-      # H2 ?? ??
+    hikari: # opensource using connection pool
       jdbc-url: jdbc:h2:tcp://localhost:1521/springbatch;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
       username: sa
       password:
@@ -19,7 +18,7 @@ spring:
   h2:
     console:
       enabled: true
-      #H2 Console? ???? ?? (H2 Console? H2 Database? UI? ????? ??)
+      # you can use 'localhost:8080/h2-console'
       path: /h2-console
   batch:
     jdbc:
@@ -38,4 +37,4 @@ spring:
 
   batch:
     jdbc:
-      initialize-schema: always   # ???? ??? ?? ?? ???? ("BATCH_JOB_INSTANCE")
+      initialize-schema: never
