@@ -30,11 +30,11 @@ spring:
       on-profile: prod
   datasource:
     hikari:
-      jdbc-url: jdbc:oracle:thin:@localhost:1521:xe
+      jdbc-url: jdbc:oracle:thin:@localhost:1521:XE
       username: spring_user
-      password:
+      password: spring_user
       driver-class-name: oracle.jdbc.OracleDriver
 
   batch:
     jdbc:
-      initialize-schema: never
+      initialize-schema: always  # related table is auto created
