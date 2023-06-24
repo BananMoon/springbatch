@@ -2,6 +2,7 @@ package lecture.practice.springbatch;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
+import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
@@ -12,6 +13,8 @@ import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.Map;
+
 @RequiredArgsConstructor    // 의존성 주입받기 위해
 @Configuration
 public class BatchConfiguration {
@@ -20,24 +23,46 @@ public class BatchConfiguration {
 
     @Bean
     public Job helloJob() {
+        // helloStep1 실행 직전에 ApplicationRunner 호출하여 JobParameters 생성 후 실행.
         return jobBuilderFactory.get("helloJob")
-                .start(helloStep1())    // (필수) 기본적으로 가져야하는 속성 step
-                .next(helloStep2())     // start() 다음으로 수행할 step
+                .start(helloStep1())
+                .next(helloStep2())
                 .build();
     }
 
+     /*
+     Tasklet의 execute()에 인자로 들어오는
+     StepContribution(StepContribution>StepExecution>JobExecution),
+     ChunkContext(ChunkContext>StepContext>StepExecution>JobExecution) 에서
+     JobLauncherForJobParameters 클래스 통해 생성한 JobParameters를 참조할 수 있다.
+     */
     @Bean
     public Step helloStep1() {
         return stepBuilderFactory.get("helloStep1")
                 .tasklet(new Tasklet() {
                     @Override
                     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
+                        // jobParameters 참조 방법
+                        // 1. StepContribution 이용
+                        JobParameters jobParameters = contribution.getStepExecution().getJobExecution().getJobParameters();
+                        System.out.printf("jobParameters의 name: %s, seq: %d, tall: %f, "
+                                , jobParameters.getString("name")
+                        ,jobParameters.getLong("seq")
+                        ,jobParameters.getDouble("tall"));
+                        System.out.println("birth: " + jobParameters.getDate("birth"));
+
+                        // 2. ChunkContext 이용
+                        Map<String, Object> jobParametersFromChuckContext = chunkContext.getStepContext().getJobParameters();
+                        jobParametersFromChuckContext.forEach((key, value) -> {
+                            System.out.println( key +":"+ value );
+                        });
+
                         System.out.println("========================");
-                        System.out.println(" >> Hello Spring Batch!!");
+                        System.out.println(" >> Step1 was executed.");
                         System.out.println("========================");
-                        return RepeatStatus.FINISHED;   // null 리턴해도 동일하긴 함.
+                        return RepeatStatus.FINISHED;
                     }
-                }).build();  // 실제 동작하는 구현체. Step에서는 기본적으로 tasklet을 무한 반복 시키기 때문에 특정 상태값을 반환해야 한번만 수행한다.
+                }).build();
     }
 
     @Bean
