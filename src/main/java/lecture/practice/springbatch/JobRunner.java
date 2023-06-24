@@ -10,9 +10,9 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
 /**
- * AS-IS : 스프링 부트가 구동되면서 자동으로 ApplicationRunner를 호출하여 (Batch Job을 구동시키는) JobLauncher까지 호출
+ * AS-IS : 스프링 부트가 구동되면서 자동으로 ApplicationRunner를 호출하여 (Batch Job을 구동시키는) JobLauncher를 이용해 Job 실행
  * TO-BE : 수동으로 작성한 JobLauncher를 구동시키도록 ApplicationRunner 구현 및 컴포넌트 등록
- * 목적 1. 동일한 JobInstance를 2번 수행할 때 문제가 발생하는 것을 확인한다.
+ * TODO 목적. 동일한 JobInstance를 2번 수행할 때 문제가 발생하는 것을 확인한다.
  * - Failed to execute ApplicationRunner
  * - JobInstanceAlreadyCompleteException : A job instance already exists and is complete for parameters={name=moonz}.  If you want to run this job again, change the parameters.
  * => JobParameters를 바꾸고 다시 실행해보면, 정상 수행하고 'BATCH_JOB_EXECUTION_PARAMS'에 추가된 것도 확인할 수 있다.
