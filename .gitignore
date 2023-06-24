@@ -1,9 +1,6 @@
 src/main/resources/application.yml
 
-.idea
-.gradle
-gradle/
+.idea/
+.gradle/
 HELP.md
-gradlew.bat
-gradlew
 build/
