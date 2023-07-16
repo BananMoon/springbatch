@@ -21,19 +21,19 @@ public class BatchConfiguration {
     @Bean
     public Job helloJob() {
         return jobBuilderFactory.get("helloJob")
-                .start(helloStep1())    // (필수) 기본적으로 가져야하는 속성 step
-                .next(helloStep2())     // start() 다음으로 수행할 step
+                .start(step1())    // (필수) 기본적으로 가져야하는 속성 step
+                .next(step2())     // start() 다음으로 수행할 step
                 .build();
     }
 
     @Bean
-    public Step helloStep1() {
-        return stepBuilderFactory.get("helloStep1")
+    public Step step1() {
+        return stepBuilderFactory.get("Step1")
                 .tasklet(new Tasklet() {
                     @Override
                     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
                         System.out.println("========================");
-                        System.out.println(" >> Hello Spring Batch!!");
+                        System.out.println(" >> Step1 has executed.");
                         System.out.println("========================");
                         return RepeatStatus.FINISHED;   // null 리턴해도 동일하긴 함.
                     }
@@ -41,13 +41,9 @@ public class BatchConfiguration {
     }
 
     @Bean
-    public Step helloStep2() {
-        return stepBuilderFactory.get("helloStep2")
-                .tasklet((contribution, chunkContext) -> {
-                    System.out.println("========================");
-                    System.out.println(" >> Step2 was executed.");
-                    System.out.println("========================");
-                    return RepeatStatus.FINISHED;
-                }).build();
+    public Step step2() {
+        return stepBuilderFactory.get("Step2")
+                .tasklet(new CustomTasklet())
+                .build();
     }
 }
