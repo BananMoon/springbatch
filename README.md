@@ -34,5 +34,8 @@ Ex) `java -jar {~~-SNAPSHOT.jar} name=user1 seq(long)=2L tall(double)=159.9 birt
 1. spring.batch.job.enabled=true 설정
 2. RunnerApplication 구현체의 `@Component` 제거하여 자동 스프링부트에 의한 Runner가 수행되도록 한다.
 
-##### 3. batch_from_bottom/JobExecution_3.1.4 📖
+##### 4. batch_from_bottom/JobExecution_3.1.4 📖
 Job을 통해 Step 수행 시, 어떤 오류로 인해 실패로 끝나면 동일 Job을 재실행할 수 있다.
+
+##### 5. batch_from_bottom/Step_3.2.1 📖
+Step이 수행하는 작업을 별도의 클래스로 생성할 수 있다. (커스텀 가능해짐)
