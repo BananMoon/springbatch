@@ -12,7 +12,11 @@ import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-@RequiredArgsConstructor    // 의존성 주입받기 위해
+/**
+ * FAILED 상태로 job 실행이 마무리됐을 때는 동일 job이더라도 다시 실행한다.
+ * - BATCH_JOB_EXECUTION 테이블의 STATUS, EXIT_CODE 칼럼 참고
+ */
+@RequiredArgsConstructor
 @Configuration
 public class BatchConfiguration {
     private final JobBuilderFactory jobBuilderFactory;
@@ -35,6 +39,7 @@ public class BatchConfiguration {
                         System.out.println("========================");
                         System.out.println(" >> Hello Spring Batch!!");
                         System.out.println("========================");
+//                        throw new RuntimeException("step 2 has failed."); // error를 발생시키면 FAILED 상태가 되어 재실행할 수 있게 된다.
                         return RepeatStatus.FINISHED;   // null 리턴해도 동일하긴 함.
                     }
                 }).build();  // 실제 동작하는 구현체. Step에서는 기본적으로 tasklet을 무한 반복 시키기 때문에 특정 상태값을 반환해야 한번만 수행한다.
