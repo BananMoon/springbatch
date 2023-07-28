@@ -39,3 +39,4 @@ Job을 통해 Step 수행 시, 어떤 오류로 인해 실패로 끝나면 동�
 
 ##### 5. batch_from_bottom/Step_3.2.1 📖
 Step이 수행하는 작업을 별도의 클래스로 생성할 수 있다. (커스텀 가능해짐)
+- 참고 : `src/main/java/lecture/practice/springbatch/CustomTasklet.java`
